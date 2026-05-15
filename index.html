@@ -9,7 +9,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0b0d12;--bg2:#111318;--bg3:#181c24;--bg4:#1f2330;--bg5:#252a38;
+  --bg:#0b0d12;--bg2:#111318;--bg3:#181c24;--bg4:#1f2330;
   --border:#232736;--border2:#2e3347;--border3:#3a4060;
   --text:#dde1f0;--muted:#606882;--muted2:#3d4256;
   --core:#f5a623;--core-bg:#1c1400;--core-bdr:#3a2900;
@@ -20,71 +20,77 @@
 }
 html{font-size:13px}
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
-button{font-family:var(--font);cursor:pointer}
-input{font-family:var(--font)}
+button,input{font-family:var(--font)}
 
-/* UPLOAD */
+/* ── UPLOAD ─────────────────────────────────────────────────────── */
 #upload-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px}
 .up-badge{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:18px}
 .up-dot{width:8px;height:8px;border-radius:50%;background:var(--core);box-shadow:0 0 0 3px var(--core-bdr);animation:dp 2s ease-in-out infinite}
 @keyframes dp{0%,100%{box-shadow:0 0 0 3px var(--core-bdr)}50%{box-shadow:0 0 0 7px #1c1000}}
-.up-title{font-size:44px;font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:6px;text-align:center}
+.up-title{font-size:42px;font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:6px;text-align:center}
 .up-title em{color:var(--core);font-style:normal}
-.up-sub{font-size:14px;color:var(--muted);margin-bottom:40px;text-align:center}
-#drop-zone{width:100%;max-width:500px;border:2px dashed var(--border2);border-radius:16px;padding:56px 32px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2)}
-#drop-zone:hover,#drop-zone.over{border-color:var(--core);background:var(--core-bg)}
-#drop-zone .dz-icon{font-size:44px;margin-bottom:16px;display:block}
-#drop-zone .dz-label{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px}
-#drop-zone .dz-hint{font-family:var(--mono);font-size:11px;color:var(--muted)}
-#file-input{display:none}
-.up-steps{width:100%;max-width:500px;margin-top:24px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 20px}
-.up-steps-title{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;font-family:var(--mono)}
-.up-step{display:flex;gap:10px;align-items:flex-start;margin-bottom:9px;font-size:12px;color:var(--muted);line-height:1.4}
-.up-step-n{width:20px;height:20px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);font-size:10px;font-weight:700;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.up-step b{color:var(--text)}
+.up-sub{font-size:14px;color:var(--muted);margin-bottom:32px;text-align:center}
 
-/* APP */
+.upload-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:720px;margin-bottom:20px}
+.dz{border:2px dashed var(--border2);border-radius:14px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2);position:relative}
+.dz:hover,.dz.over{border-color:var(--core);background:var(--core-bg)}
+.dz.loaded{border-color:var(--green);background:#071a10}
+.dz-icon{font-size:28px;display:block;margin-bottom:8px}
+.dz-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px}
+.dz-hint{font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.4}
+.dz-check{position:absolute;top:8px;right:10px;font-size:14px;display:none}
+.dz.loaded .dz-check{display:block}
+.dz.loaded .dz-hint{color:var(--green)}
+.dz input[type=file]{display:none}
+
+.up-required{font-size:11px;color:var(--muted);text-align:center;margin-bottom:16px;font-family:var(--mono)}
+.up-required b{color:var(--amber)}
+.btn-start{padding:12px 36px;background:var(--core);color:#000;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;opacity:.35;pointer-events:none;transition:all .2s;letter-spacing:.02em}
+.btn-start.ready{opacity:1;pointer-events:auto}
+.btn-start.ready:hover{filter:brightness(1.1)}
+
+/* ── APP ─────────────────────────────────────────────────────────── */
 #app{display:none}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:1px solid var(--border);background:rgba(11,13,18,.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:200;gap:12px;flex-wrap:wrap}
-.logo{font-size:15px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.logo{font-size:15px;font-weight:800;letter-spacing:-.02em}
 .logo em{color:var(--core);font-style:normal}
-.topbar-meta{font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap}
+.topbar-meta{font-family:var(--mono);font-size:10px;color:var(--muted)}
 .topbar-right{display:flex;gap:7px;align-items:center;flex-shrink:0}
-.btn{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700;border:none;transition:all .15s;letter-spacing:.03em}
+.btn{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700;border:none;transition:all .15s;letter-spacing:.03em;cursor:pointer}
 .btn-ghost{background:var(--bg3);color:var(--muted);border:1px solid var(--border2)}
 .btn-ghost:hover{background:var(--bg4);color:var(--text)}
 .btn-primary{background:var(--core);color:#000;font-size:12px;padding:7px 18px}
 .btn-primary:hover{filter:brightness(1.1)}
 .main{padding:18px 22px}
 
-/* STATS */
+/* ── STATS ───────────────────────────────────────────────────────── */
 .stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:16px}
 .stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px}
 .stat-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;font-family:var(--mono)}
 .stat-value{font-size:21px;font-weight:800;color:var(--text);line-height:1}
-.stat-value sup{font-size:11px;font-weight:600;color:var(--muted);vertical-align:baseline}
+.stat-value sup{font-size:11px;font-weight:600;color:var(--muted)}
 
-/* NOTICES */
+/* ── NOTICES ─────────────────────────────────────────────────────── */
 .notice{border-radius:var(--r);padding:9px 14px;margin-bottom:12px;font-size:11px;display:none;gap:8px;align-items:flex-start;line-height:1.55;font-family:var(--mono)}
 .notice.show{display:flex}
 .n-ok {background:#071a10;border:1px solid #134d25;color:var(--green)}
 .n-inf{background:#07111e;border:1px solid #0e3460;color:var(--blue)}
 
-/* TABS */
+/* ── TABS ────────────────────────────────────────────────────────── */
 .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:16px}
 .tab-btn{padding:8px 16px;background:none;border:none;cursor:pointer;font-size:11px;font-weight:700;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;letter-spacing:.05em;transition:color .15s;text-transform:uppercase}
 .tab-btn.active{color:var(--text);border-bottom-color:var(--core)}
 
-/* CONTROLS */
+/* ── CONTROLS ────────────────────────────────────────────────────── */
 .controls{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
 .search{flex:1;min-width:150px;padding:7px 11px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;outline:none;transition:border-color .15s}
 .search:focus{border-color:var(--border3)}
 .search::placeholder{color:var(--muted2)}
 .sort-grp{display:flex;gap:4px}
-.sort-btn{padding:6px 11px;font-size:10px;font-weight:700;border-radius:7px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);transition:all .15s;letter-spacing:.04em;text-transform:uppercase}
+.sort-btn{padding:6px 11px;font-size:10px;font-weight:700;border-radius:7px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);transition:all .15s;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
 .sort-btn.active{background:var(--bg4);color:var(--text);border-color:var(--border3)}
 
-/* BOARD */
+/* ── BOARD ───────────────────────────────────────────────────────── */
 .board{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
 .column{border-radius:13px;overflow:hidden;border:1.5px solid}
 .col-CORE  {border-color:var(--core-bdr);background:var(--core-bg)}
@@ -109,17 +115,16 @@ input{font-family:var(--font)}
 .col-TEST   .col-roas{color:var(--test)}
 .col-kpi{display:grid;grid-template-columns:1fr 1fr;gap:5px}
 .kpi-box{background:rgba(255,255,255,.03);border-radius:6px;padding:4px 8px;font-size:10px}
-.kpi-k{color:var(--muted)}
-.kpi-v{font-family:var(--mono);font-weight:700}
+.kpi-k{color:var(--muted)}.kpi-v{font-family:var(--mono);font-weight:700}
 .col-CORE   .kpi-v{color:var(--core)}
 .col-Reszta .kpi-v{color:var(--reszta)}
 .col-TEST   .kpi-v{color:var(--test)}
-.col-body{padding:7px;display:flex;flex-direction:column;gap:6px;max-height:560px;overflow-y:auto}
+.col-body{padding:7px;display:flex;flex-direction:column;gap:6px;max-height:540px;overflow-y:auto}
 .col-body::-webkit-scrollbar{width:3px}
 .col-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 .col-empty{color:var(--muted2);font-size:11px;text-align:center;padding:22px 0;font-family:var(--mono)}
 
-/* OFFER CARD */
+/* ── OFFER CARD ──────────────────────────────────────────────────── */
 .offer-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:9px 10px;transition:border-color .15s}
 .offer-card:hover{border-color:var(--border3)}
 .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:5px;margin-bottom:7px}
@@ -134,9 +139,48 @@ input{font-family:var(--font)}
 .m-lbl{font-size:8px;color:var(--muted2);margin-bottom:1px;font-family:var(--mono)}
 .m-val{font-size:10px;font-weight:700;font-family:var(--mono)}
 .c-green{color:var(--green)}.c-amber{color:var(--amber)}.c-red{color:var(--red)}.c-muted{color:var(--muted)}
-.card-bottom{display:flex;justify-content:space-between;align-items:center;font-size:9px;font-family:var(--mono);color:var(--muted2)}
+.card-bottom{display:flex;justify-content:space-between;font-size:9px;font-family:var(--mono);color:var(--muted2)}
 
-/* HISTORY */
+/* ── GROUPS TAB ──────────────────────────────────────────────────── */
+.groups-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.group-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.gc-head{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.gc-name{font-size:12px;font-weight:700;color:var(--text)}
+.gc-camp{font-size:10px;color:var(--muted);margin-top:2px;font-family:var(--mono)}
+.gc-roas-big{font-family:var(--mono);font-size:18px;font-weight:800}
+.gc-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.gc-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.gc-m{background:var(--bg3);border-radius:7px;padding:6px 8px;text-align:center}
+.gc-ml{font-size:9px;color:var(--muted);font-family:var(--mono);margin-bottom:3px}
+.gc-mv{font-size:13px;font-weight:700;font-family:var(--mono)}
+
+/* Recommendation boxes */
+.rec-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rec-box{border-radius:8px;padding:9px 11px;border:1px solid}
+.rec-type{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono);margin-bottom:5px}
+.rec-action{font-size:13px;font-weight:800;margin-bottom:3px}
+.rec-reason{font-size:10px;font-family:var(--mono);color:var(--muted);line-height:1.4}
+
+.rec-up   {background:#071a10;border-color:#134d25}
+.rec-up   .rec-type{color:var(--green)}
+.rec-up   .rec-action{color:var(--green)}
+.rec-hold {background:var(--bg3);border-color:var(--border2)}
+.rec-hold .rec-type{color:var(--muted)}
+.rec-hold .rec-action{color:var(--muted)}
+.rec-warn {background:#1e1200;border-color:#4a3000}
+.rec-warn .rec-type{color:var(--amber)}
+.rec-warn .rec-action{color:var(--amber)}
+.rec-down {background:#200a0a;border-color:#4a1515}
+.rec-down .rec-type{color:var(--red)}
+.rec-down .rec-action{color:var(--red)}
+
+.group-tag{font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:var(--mono)}
+.gt-CORE  {background:var(--core-bg);color:var(--core);border:1px solid var(--core-bdr)}
+.gt-Reszta{background:var(--reszta-bg);color:var(--reszta);border:1px solid var(--reszta-bdr)}
+.gt-TEST  {background:var(--test-bg);color:var(--test);border:1px solid var(--test-bdr)}
+.gt-mixed {background:var(--bg3);color:var(--muted);border:1px solid var(--border2)}
+
+/* ── HISTORY ─────────────────────────────────────────────────────── */
 .hist-filters{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap}
 .hf-btn{padding:5px 11px;font-size:10px;font-weight:700;border-radius:7px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);cursor:pointer;letter-spacing:.04em;transition:all .15s;text-transform:uppercase}
 .hf-btn.active{background:var(--bg4);color:var(--text);border-color:var(--border3)}
@@ -152,37 +196,51 @@ input{font-family:var(--font)}
 .gp-TEST  {background:var(--test-bg);color:var(--test);border:1px solid var(--test-bdr)}
 .hist-empty{color:var(--muted);text-align:center;padding:48px 0;font-size:13px;font-family:var(--mono)}
 
-/* LEGEND */
+/* ── LEGEND ──────────────────────────────────────────────────────── */
 .legend{margin-top:18px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:9px;font-size:10px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);line-height:1.6}
 .legend b{color:var(--text)}
 .legend .sep{color:var(--border2)}
 
-@media(max-width:750px){.board{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.main{padding:12px 14px}}
+@media(max-width:750px){.board,.groups-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.upload-grid{grid-template-columns:1fr}.main{padding:12px 14px}}
 </style>
 </head>
 <body>
 
-<!-- UPLOAD -->
+<!-- ══ UPLOAD ═══════════════════════════════════════════════════════ -->
 <div id="upload-screen">
   <div class="up-badge"><span class="up-dot"></span>Allegro Ads · DIVNA</div>
   <h1 class="up-title">Core <em>Rotation</em></h1>
-  <p class="up-sub">Завантаж звіт рівня «Oferty» з Allegro Ads</p>
-  <div id="drop-zone">
-    <span class="dz-icon">📊</span>
-    <div class="dz-label">Przeciągnij plik lub kliknij</div>
-    <div class="dz-hint">statystyki_oferty_*.xlsx</div>
-    <input type="file" id="file-input" accept=".xlsx,.xls">
+  <p class="up-sub">Завантаж три звіти з Allegro Ads → Statystyki</p>
+
+  <div class="upload-grid">
+    <div class="dz" id="dz-offers" onclick="document.getElementById('fi-offers').click()">
+      <span class="dz-icon">📋</span>
+      <div class="dz-title">Oferty</div>
+      <div class="dz-hint" id="hint-offers">statystyki_oferty_*.xlsx<br><b style="color:var(--amber)">Wymagane</b></div>
+      <div class="dz-check">✅</div>
+      <input type="file" id="fi-offers" accept=".xlsx,.xls">
+    </div>
+    <div class="dz" id="dz-groups" onclick="document.getElementById('fi-groups').click()">
+      <span class="dz-icon">📂</span>
+      <div class="dz-title">Grupy reklam</div>
+      <div class="dz-hint" id="hint-groups">statystyki_grupy-reklam_*.xlsx<br><b style="color:var(--amber)">Wymagane</b></div>
+      <div class="dz-check">✅</div>
+      <input type="file" id="fi-groups" accept=".xlsx,.xls">
+    </div>
+    <div class="dz" id="dz-camps" onclick="document.getElementById('fi-camps').click()">
+      <span class="dz-icon">🎯</span>
+      <div class="dz-title">Kampanie</div>
+      <div class="dz-hint" id="hint-camps">statystyki_kampanie_*.xlsx<br><span style="color:var(--muted)">Opcjonalne</span></div>
+      <div class="dz-check">✅</div>
+      <input type="file" id="fi-camps" accept=".xlsx,.xls">
+    </div>
   </div>
-  <div class="up-steps">
-    <div class="up-steps-title">Jak pobrać raport</div>
-    <div class="up-step"><div class="up-step-n">1</div>Allegro Seller → Reklamy → Statystyki</div>
-    <div class="up-step"><div class="up-step-n">2</div>Wybierz zakres dat → Poziom: <b>Oferty</b></div>
-    <div class="up-step"><div class="up-step-n">3</div>Pobierz raport <b>(.xlsx)</b></div>
-    <div class="up-step"><div class="up-step-n">4</div>Przeciągnij tutaj lub kliknij powyżej</div>
-  </div>
+
+  <div class="up-required" id="up-status">Завантаж мінімум <b>Oferty</b> і <b>Grupy reklam</b></div>
+  <button class="btn-start" id="btn-start" onclick="startApp()">▶ Запустити аналіз</button>
 </div>
 
-<!-- APP -->
+<!-- ══ APP ══════════════════════════════════════════════════════════ -->
 <div id="app">
   <div class="topbar">
     <div style="display:flex;align-items:center;gap:14px">
@@ -190,7 +248,7 @@ input{font-family:var(--font)}
       <div class="topbar-meta" id="meta-text">—</div>
     </div>
     <div class="topbar-right">
-      <button class="btn btn-ghost" onclick="resetApp()">↑ Nowy plik</button>
+      <button class="btn btn-ghost" onclick="resetApp()">↑ Nowe pliki</button>
       <button class="btn btn-primary" onclick="runRotation()">▶ Rotacja</button>
     </div>
   </div>
@@ -206,9 +264,11 @@ input{font-family:var(--font)}
     <div class="notice n-inf" id="n-inf"></div>
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('board',this)">Дошка</button>
+      <button class="tab-btn" onclick="switchTab('groups',this)" id="tab-groups-btn">Групи (0)</button>
       <button class="tab-btn" onclick="switchTab('history',this)" id="hist-btn">Історія (0)</button>
     </div>
 
+    <!-- BOARD -->
     <div id="tab-board">
       <div class="controls">
         <input class="search" id="search" placeholder="Szukaj oferty lub kampanii…" oninput="renderBoard()">
@@ -222,6 +282,12 @@ input{font-family:var(--font)}
       <div class="board" id="board"></div>
     </div>
 
+    <!-- GROUPS -->
+    <div id="tab-groups" style="display:none">
+      <div class="groups-grid" id="groups-grid"></div>
+    </div>
+
+    <!-- HISTORY -->
     <div id="tab-history" style="display:none">
       <div class="hist-filters">
         <button class="hf-btn active" onclick="setHistFilter('ALL',this)">Всі</button>
@@ -232,34 +298,69 @@ input{font-family:var(--font)}
     </div>
 
     <div class="legend">
-      <span><b>Promote</b>: ROAS ≥ 5× + sprzedaż ≥ 2 szt &nbsp;або&nbsp; 1 szt + kliki ≥ 10 або koszt ≥ 10 zł</span>
+      <span><b>Promote</b>: ROAS ≥ 5× + sprzedaż ≥ 2 szt або 1 szt + kliki ≥ 10 / koszt ≥ 10 zł</span>
       <span class="sep">|</span>
-      <span><b>Demote</b>: 0 sprzedaży przy kliki ≥ 10 lub koszt ≥ 10 zł &nbsp;або&nbsp; ROAS &lt; 3× przy koszt ≥ 20 zł</span>
+      <span><b>Demote</b>: 0 sprzedaży przy kliki ≥ 10 lub koszt ≥ 10 zł; lub ROAS &lt; 3× przy koszt ≥ 20 zł</span>
       <span class="sep">|</span>
-      <span><b>Hold</b>: kliki &lt; 10 i koszt &lt; 5 zł</span>
+      <span><b>Budżet ↑</b>: ROAS ≥ 5× i grupa wpiera się w budżet (+20%, при ROAS 10+ →+30–50%)</span>
       <span class="sep">|</span>
-      <span>❄ CD: CORE=1 cykl, TEST=2 cykle &nbsp;|&nbsp; min 2 cykle w CORE przed demote &nbsp;|&nbsp; Break-even <b>1.94×</b></span>
+      <span><b>CPC ↑</b>: ROAS ≥ 5×, budżet &lt;60% wydany, mało wyświetleń (+0.02–0.05 zł)</span>
     </div>
   </div>
 </div>
 
 <script>
-// ══ CONSTANTS — регламент DIVNA ══════════════════════════════════════
-const ROAS_PROMOTE          = 5;
-const ROAS_DEMOTE           = 3;
-const BREAK_EVEN            = 1.94;
-const COOLDOWN_CORE         = 1;   // §11.1
-const COOLDOWN_TEST         = 2;   // §11.1
-const MIN_CORE_CYCLES       = 2;   // §11.2 — min cycles in CORE before demote
-const MIN_TEST_CYCLES       = 1;   // §11.3 — min cycles in TEST before move
-const CLICKS_THRESH         = 10;  // §6
-const COST_THRESH_PROMOTE   = 10;  // §6 promote confirmation
-const COST_THRESH_DEMOTE    = 10;  // §6 demote 0-sales
-const COST_THRESH_ROAS_LOW  = 20;  // §6 demote ROAS<3
-const COST_HOLD_MAX         = 5;   // §6 hold
+// ══ CONSTANTS ════════════════════════════════════════════════════════
+const ROAS_PROMOTE=5,ROAS_DEMOTE=3,BREAK_EVEN=1.94;
+const COOLDOWN_CORE=1,COOLDOWN_TEST=2,MIN_CORE_CYCLES=2,MIN_TEST_CYCLES=1;
+const CLICKS_THRESH=10,COST_THRESH=10,COST_THRESH_ROAS=20,COST_HOLD_MAX=5;
+// Budget/CPC §7,§8
+const BUDGET_SPEND_RATIO=0.80; // впирається якщо витрати ≥80% бюджету
+const CPC_SPEND_LOW=0.60;      // бюджет не витрачається якщо <60%
 
 // ══ STATE ════════════════════════════════════════════════════════════
-let offers=[], history=[], cycleCount=1, sortKey='roas', histFilter='ALL';
+let offers=[],groups=[],history=[],cycleCount=1,sortKey='roas',histFilter='ALL';
+let rawOffers=null,rawGroups=null,rawCamps=null;
+
+// ══ FILE SLOTS ═══════════════════════════════════════════════════════
+function setupDz(dzId,inputId,slot,required){
+  const dz=document.getElementById(dzId);
+  const fi=document.getElementById(inputId);
+  fi.addEventListener('change',e=>{if(e.target.files[0])loadSlot(e.target.files[0],slot,dzId,inputId)});
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over')});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+  dz.addEventListener('drop',e=>{
+    e.preventDefault();dz.classList.remove('over');
+    if(e.dataTransfer.files[0])loadSlot(e.dataTransfer.files[0],slot,dzId,inputId);
+  });
+}
+setupDz('dz-offers','fi-offers','offers',true);
+setupDz('dz-groups','fi-groups','groups',true);
+setupDz('dz-camps', 'fi-camps', 'camps', false);
+
+function loadSlot(file,slot,dzId,inputId){
+  const r=new FileReader();
+  r.onload=e=>{
+    const buf=e.target.result;
+    if(slot==='offers') rawOffers=buf;
+    else if(slot==='groups') rawGroups=buf;
+    else rawCamps=buf;
+    const dz=document.getElementById(dzId);
+    dz.classList.add('loaded');
+    document.getElementById('hint-'+slot.replace('camps','camps')).textContent=file.name;
+    updateStartBtn();
+  };
+  r.readAsArrayBuffer(file);
+}
+
+function updateStartBtn(){
+  const ready=rawOffers&&rawGroups;
+  const btn=document.getElementById('btn-start');
+  btn.classList.toggle('ready',!!ready);
+  document.getElementById('up-status').innerHTML=ready
+    ?'✅ Готово — натисни <b>Запустити аналіз</b>'
+    :'Завантаж мінімум <b>Oferty</b> і <b>Grupy reklam</b>';
+}
 
 // ══ PARSE ════════════════════════════════════════════════════════════
 function detectGroup(g){
@@ -270,31 +371,25 @@ function detectGroup(g){
   return 'Reszta';
 }
 
-function parseXlsx(buffer){
-  const wb=XLSX.read(new Uint8Array(buffer),{type:'array'});
-  const ws=wb.Sheets[wb.SheetNames[0]];
-  const rows=XLSX.utils.sheet_to_json(ws,{defval:0});
+function parseOffersXlsx(buf){
+  const wb=XLSX.read(new Uint8Array(buf),{type:'array'});
+  const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:0});
   const map=new Map();
   for(const r of rows){
     const id=String(r['Numer klikniętej oferty']||r['Numer oferty']||'');
     if(!id||id==='0') continue;
-    const name    =r['Tytuł klikniętej oferty']||r['Tytuł oferty']||'—';
-    const groupRaw=String(r['Nazwa grupy reklam']||'');
-    const campaign=String(r['Nazwa kampanii']||'');
-    const spend   =+r['Koszt brutto (PLN)']||0;
-    const revenue =+r['Wartość sprzedaży (PLN)']||0;
-    const sales   =+r['Liczba sprzedanych sztuk']||0;
-    const impr    =+r['Wyświetlenia']||0;
-    const clicks  =+r['Kliknięcia']||0;
+    const spend=+r['Koszt brutto (PLN)']||0,revenue=+r['Wartość sprzedaży (PLN)']||0;
+    const sales=+r['Liczba sprzedanych sztuk']||0,impr=+r['Wyświetlenia']||0,clicks=+r['Kliknięcia']||0;
     if(map.has(id)){
       const e=map.get(id);
-      const ns=e.spend+spend, nr=e.revenue+revenue;
-      map.set(id,{...e,spend:ns,revenue:nr,sales:e.sales+sales,
-        impressions:e.impressions+impr,clicks:e.clicks+clicks,
-        roas:ns>0?r2(nr/ns):0});
+      const ns=e.spend+spend,nr=e.revenue+revenue;
+      map.set(id,{...e,spend:ns,revenue:nr,sales:e.sales+sales,impressions:e.impressions+impr,clicks:e.clicks+clicks,roas:ns>0?r2(nr/ns):0});
     } else {
-      map.set(id,{id,name,groupRaw,campaign,
-        group:detectGroup(groupRaw),
+      map.set(id,{id,
+        name:r['Tytuł klikniętej oferty']||r['Tytuł oferty']||'—',
+        groupRaw:String(r['Nazwa grupy reklam']||''),
+        campaign:String(r['Nazwa kampanii']||''),
+        group:detectGroup(String(r['Nazwa grupy reklam']||'')),
         roas:spend>0?r2(revenue/spend):0,
         spend,revenue,sales,impressions:impr,clicks,
         cooldown:0,cycles:1,core_cycles:0});
@@ -303,89 +398,122 @@ function parseXlsx(buffer){
   return [...map.values()];
 }
 
-// ══ DECISION ENGINE — §6 + §11 регламент ════════════════════════════
+function parseGroupsXlsx(buf){
+  const wb=XLSX.read(new Uint8Array(buf),{type:'array'});
+  // first sheet = stats, might have 2nd = sprzedaz
+  const ws=wb.Sheets[wb.SheetNames[0]];
+  const rows=XLSX.utils.sheet_to_json(ws,{defval:0});
+  return rows.filter(r=>r['Nazwa grupy reklam']).map(r=>({
+    campaign:    String(r['Nazwa kampanii']||''),
+    name:        String(r['Nazwa grupy reklam']||''),
+    impressions: +r['Wyświetlenia']||0,
+    clicks:      +r['Kliknięcia']||0,
+    cpcBrutto:   +r['CPC brutto (PLN)']||0,
+    spend:       +r['Koszt brutto (PLN)']||0,
+    roas:        +r['ROAS brutto (PLN)']||0,
+    sales:       +r['Liczba sprzedanych sztuk']||0,
+    revenue:     +r['Wartość sprzedaży (PLN)']||0,
+    group:       detectGroup(String(r['Nazwa grupy reklam']||'')),
+  }));
+}
+
+// ══ BUDGET / CPC RECOMMENDATIONS (§7, §8) ════════════════════════════
+function groupRecommendations(g){
+  // ─ BUDGET §7 ─
+  let budgetRec,budgetCls,budgetReason;
+  if(g.roas>=5){
+    // Heuristic: якщо ROAS ≥ 5 і кліки/покази достатні — вважаємо що бюджет обмежує
+    // (без реального бюджетного ліміту з файлу — використовуємо ROAS як сигнал)
+    if(g.roas>=10){
+      budgetRec='+ 30–50%'; budgetCls='rec-up';
+      budgetReason=`ROAS ${g.roas}× (10+) — стабільно масштабуємо`;
+    } else {
+      budgetRec='+ 20%'; budgetCls='rec-up';
+      budgetReason=`ROAS ${g.roas}× ≥ 5× — готово до масштабування`;
+    }
+  } else if(g.roas>=BREAK_EVEN){
+    budgetRec='Залишити'; budgetCls='rec-hold';
+    budgetReason=`ROAS ${g.roas}× — прибутково, але < 5× (спочатку ротація)`;
+  } else if(g.roas>0){
+    budgetRec='↓ Розглянути зниження'; budgetCls='rec-warn';
+    budgetReason=`ROAS ${g.roas}× < Break-even ${BREAK_EVEN}×`;
+  } else {
+    budgetRec='Не чіпати'; budgetCls='rec-hold';
+    budgetReason='Немає даних про продажі';
+  }
+
+  // ─ CPC §8 ─
+  // CPC піднімаємо тільки якщо: ROAS ≥ 5, бюджет НЕ витрачається (мало кліків/показів відносно потенціалу)
+  let cpcRec,cpcCls,cpcReason;
+  const lowImpressions = g.impressions < 500 && g.clicks < 20; // мало активності
+  if(g.roas>=5 && lowImpressions){
+    cpcRec=`+ 0.02–0.05 zł`; cpcCls='rec-up';
+    cpcReason=`ROAS ${g.roas}×, мало показів (${g.impressions}) — група обмежена ставкою`;
+  } else if(g.roas>=5 && !lowImpressions){
+    cpcRec='Залишити CPC'; cpcCls='rec-hold';
+    cpcReason=`Бюджет витрачається (${g.impressions} wyśw) — підніми Budżet, не CPC`;
+  } else if(g.roas>0 && g.roas<5){
+    cpcRec='Не піднімати'; cpcCls='rec-warn';
+    cpcReason=`ROAS ${g.roas}× < 5× — спочатку ротація оферів`;
+  } else {
+    cpcRec='Не чіпати'; cpcCls='rec-hold';
+    cpcReason='Недостатньо даних';
+  }
+
+  return{budgetRec,budgetCls,budgetReason,cpcRec,cpcCls,cpcReason};
+}
+
+// ══ OFFER DECISION (§6+§11) ═══════════════════════════════════════════
 function decide(o){
-  // Cooldown — завжди першим (§11.1)
-  if(o.cooldown>0)
-    return{action:'HOLD',rc:'COOLDOWN_BLOCKED',
-           reason:`Cooldown: ще ${o.cooldown} цикл(ів)`};
-
-  // Мало даних → hold (§6 hold rule)
-  if(o.clicks<CLICKS_THRESH && o.spend<COST_HOLD_MAX)
-    return{action:'HOLD',rc:'INSUFFICIENT_DATA',
-           reason:`Mało danych (${o.clicks} klik · ${fmt(o.spend,1)} zł)`};
-
+  if(o.cooldown>0) return{action:'HOLD',rc:'COOLDOWN_BLOCKED',reason:`Cooldown: ${o.cooldown} цикл(ів)`};
+  if(o.clicks<CLICKS_THRESH&&o.spend<COST_HOLD_MAX) return{action:'HOLD',rc:'INSUFFICIENT_DATA',reason:`Mało danych (${o.clicks} klik · ${fmt(o.spend,1)} zł)`};
   if(o.group==='CORE'){
-    // Min cycles guard (§11.2)
-    if((o.core_cycles||0)<MIN_CORE_CYCLES)
-      return{action:'HOLD',rc:'MIN_CORE_CYCLES',
-             reason:`W CORE ${o.core_cycles||0}/${MIN_CORE_CYCLES} cykl(i) — za wcześnie na demote`};
-    // 0 sprzedaży + dość danych (§6 demote)
-    if(o.sales===0 && (o.clicks>=CLICKS_THRESH||o.spend>=COST_THRESH_DEMOTE))
-      return{action:'DEMOTE',rc:'NO_SALES_HIGH_SPEND',
-             reason:`0 sprzedaży · ${o.clicks} klik · ${fmt(o.spend,1)} zł`};
-    // ROAS < 3 przy wystarczającym spend (§6 demote)
-    if(o.roas<ROAS_DEMOTE && o.spend>=COST_THRESH_ROAS_LOW)
-      return{action:'DEMOTE',rc:'ROAS_LOW_DEMOTE',
-             reason:`ROAS ${o.roas}× < ${ROAS_DEMOTE}× · koszt ${fmt(o.spend,1)} zł`};
+    if((o.core_cycles||0)<MIN_CORE_CYCLES) return{action:'HOLD',rc:'MIN_CORE_CYCLES',reason:`W CORE ${o.core_cycles||0}/${MIN_CORE_CYCLES} cykl(i)`};
+    if(o.sales===0&&(o.clicks>=CLICKS_THRESH||o.spend>=COST_THRESH)) return{action:'DEMOTE',rc:'NO_SALES_HIGH_SPEND',reason:`0 sprzedaży · ${o.clicks} klik · ${fmt(o.spend,1)} zł`};
+    if(o.roas<ROAS_DEMOTE&&o.spend>=COST_THRESH_ROAS) return{action:'DEMOTE',rc:'ROAS_LOW_DEMOTE',reason:`ROAS ${o.roas}× < ${ROAS_DEMOTE}× · koszt ${fmt(o.spend,1)} zł`};
     return{action:'HOLD',rc:'STABLE',reason:'Stabilny CORE'};
   }
-
-  // TEST — min cycles before any move (§11.3)
-  if(o.group==='TEST' && o.cycles<MIN_TEST_CYCLES+1)
-    return{action:'HOLD',rc:'MIN_TEST_CYCLES',
-           reason:`W TEST ${o.cycles-1}/${MIN_TEST_CYCLES} cykl(i) — czekamy`};
-
-  // PROMOTE — §6 + §11.4 (anti-flapping)
+  if(o.group==='TEST'&&o.cycles<MIN_TEST_CYCLES+1) return{action:'HOLD',rc:'MIN_TEST_CYCLES',reason:`W TEST ${o.cycles-1}/${MIN_TEST_CYCLES} cykl(i)`};
   if(o.roas>=ROAS_PROMOTE){
-    const confirmed = o.sales>=2 ||
-      (o.sales===1 && (o.clicks>=CLICKS_THRESH||o.spend>=COST_THRESH_PROMOTE));
-    if(confirmed)
-      return{action:'PROMOTE',rc:'ROAS_HIGH_PROMOTE',
-             reason:`ROAS ${o.roas}× · ${o.sales} szt · ${o.clicks} klik`};
-    return{action:'HOLD',rc:'ROAS_OK_LOW_VOLUME',
-           reason:`ROAS ${o.roas}× OK, ale mało danych popytu`};
+    const ok=o.sales>=2||(o.sales===1&&(o.clicks>=CLICKS_THRESH||o.spend>=COST_THRESH));
+    if(ok) return{action:'PROMOTE',rc:'ROAS_HIGH_PROMOTE',reason:`ROAS ${o.roas}× · ${o.sales} szt · ${o.clicks} klik`};
+    return{action:'HOLD',rc:'ROAS_OK_LOW_VOLUME',reason:`ROAS ${o.roas}× OK, mało danych popytu`};
   }
-
   return{action:'HOLD',rc:'COLLECTING',reason:'Zbieranie danych'};
 }
 
-// ══ ROTATION ════════════════════════════════════════════════════════
+// ══ ROTATION ══════════════════════════════════════════════════════════
 function runRotation(){
   if(!offers.length) return;
   const moved=[];
   offers=offers.map(o=>{
     const{action,reason,rc}=decide(o);
-    let ng=o.group, cd=Math.max(0,o.cooldown-1), cc=o.core_cycles||0;
-    if(action==='PROMOTE'){ ng='CORE';   cd=COOLDOWN_CORE; cc=0; }
-    else if(action==='DEMOTE'){ ng='Reszta'; cd=o.group==='TEST'?COOLDOWN_TEST:COOLDOWN_CORE; cc=0; }
+    let ng=o.group,cd=Math.max(0,o.cooldown-1),cc=o.core_cycles||0;
+    if(action==='PROMOTE'){ng='CORE';cd=COOLDOWN_CORE;cc=0;}
+    else if(action==='DEMOTE'){ng='Reszta';cd=o.group==='TEST'?COOLDOWN_TEST:COOLDOWN_CORE;cc=0;}
     else if(o.group==='CORE') cc++;
-    if(action!=='HOLD')
-      moved.push({id:o.id,name:o.name,campaign:o.campaign,
-        group:o.group,to:ng,action,reason,rc,cycle:cycleCount,
-        roas:o.roas,spend:o.spend,sales:o.sales,clicks:o.clicks,
-        cooldown_until:cycleCount+cd});
+    if(action!=='HOLD') moved.push({id:o.id,name:o.name,campaign:o.campaign,group:o.group,to:ng,action,reason,rc,cycle:cycleCount,roas:o.roas,spend:o.spend,sales:o.sales,clicks:o.clicks,cooldown_until:cycleCount+cd});
     return{...o,group:ng,cooldown:cd,cycles:o.cycles+1,core_cycles:cc};
   });
   history=[...moved,...history];
   cycleCount++;
   hideNotices();
   if(moved.length){
-    const prom=moved.filter(m=>m.action==='PROMOTE').length;
-    const dem =moved.filter(m=>m.action==='DEMOTE').length;
+    const p=moved.filter(m=>m.action==='PROMOTE').length,d=moved.filter(m=>m.action==='DEMOTE').length;
     const n=document.getElementById('n-ok');
-    n.innerHTML=`✓ &nbsp;Ротацію завершено: <b>${prom} promote</b>, <b>${dem} demote</b>`
-      +(moved.length?' &nbsp;·&nbsp; '+moved.slice(0,3).map(h=>`${h.action==='PROMOTE'?'↑':'↓'} ${trunc(h.name,32)} → ${h.to}`).join(' &nbsp;·&nbsp; ')+(moved.length>3?` +${moved.length-3}`:''):'');
+    n.innerHTML=`✓ &nbsp;Ротацію завершено: <b>${p} promote</b>, <b>${d} demote</b> &nbsp;·&nbsp; `
+      +moved.slice(0,3).map(h=>`${h.action==='PROMOTE'?'↑':'↓'} ${trunc(h.name,28)} → ${h.to}`).join(' &nbsp;·&nbsp; ')
+      +(moved.length>3?` +${moved.length-3}`:'');
     n.classList.add('show');
   } else {
     const n=document.getElementById('n-inf');
-    n.innerHTML='ℹ &nbsp;Без змін — всі офери стабільні, на cooldown, або мало даних.';
+    n.innerHTML='ℹ &nbsp;Без змін — всі офери стабільні, на cooldown або мало даних.';
     n.classList.add('show');
   }
   updateStats();renderBoard();renderHistory();
 }
 
-// ══ RENDER ═══════════════════════════════════════════════════════════
+// ══ RENDER BOARD ══════════════════════════════════════════════════════
 function updateStats(){
   const core=offers.filter(o=>o.group==='CORE');
   const cr=core.length?(core.reduce((s,o)=>s+o.roas,0)/core.length).toFixed(1):'—';
@@ -393,7 +521,7 @@ function updateStats(){
   document.getElementById('s-roas').innerHTML=cr+'<sup>×</sup>';
   document.getElementById('s-spend').innerHTML=fmt(offers.reduce((s,o)=>s+o.spend,0),0)+'<sup> zł</sup>';
   document.getElementById('s-rev').innerHTML=fmt(offers.reduce((s,o)=>s+o.revenue,0),0)+'<sup> zł</sup>';
-  document.getElementById('meta-text').textContent=`Cykl #${cycleCount} · ${offers.length} ofert`;
+  document.getElementById('meta-text').textContent=`Cykl #${cycleCount} · ${offers.length} ofert · ${groups.length} grup`;
 }
 
 function renderBoard(){
@@ -404,70 +532,104 @@ function renderBoard(){
     const all=offers.filter(o=>o.group===gk);
     let list=q?all.filter(o=>o.name.toLowerCase().includes(q)||o.campaign.toLowerCase().includes(q)):[...all];
     list.sort((a,b)=>sortKey==='roas'?b.roas-a.roas:sortKey==='spend'?b.spend-a.spend:sortKey==='sales'?b.sales-a.sales:b.clicks-a.clicks);
-    const gS=all.reduce((s,o)=>s+o.spend,0);
-    const gR=all.reduce((s,o)=>s+o.revenue,0);
-    const gRoas=gS>0?(gR/gS).toFixed(1):'—';
+    const gS=all.reduce((s,o)=>s+o.spend,0),gR=all.reduce((s,o)=>s+o.revenue,0);
     const icon=gk==='CORE'?'⭐':gk==='Reszta'?'🔄':'🧪';
     const col=document.createElement('div');
     col.className=`column col-${gk}`;
-    col.innerHTML=`
-      <div class="col-head">
-        <div class="col-title-row">
-          <div class="col-title">${icon} ${gk}<span class="col-cnt">${all.length}</span></div>
-          <span class="col-roas">ROAS ${gRoas}×</span>
-        </div>
-        <div class="col-kpi">
-          <div class="kpi-box"><span class="kpi-k">Koszt </span><span class="kpi-v">${fmt(gS,0)} zł</span></div>
-          <div class="kpi-box"><span class="kpi-k">Revenue </span><span class="kpi-v">${fmt(gR,0)} zł</span></div>
-        </div>
+    col.innerHTML=`<div class="col-head">
+      <div class="col-title-row">
+        <div class="col-title">${icon} ${gk}<span class="col-cnt">${all.length}</span></div>
+        <span class="col-roas">ROAS ${gS>0?(gR/gS).toFixed(1):'—'}×</span>
       </div>
+      <div class="col-kpi">
+        <div class="kpi-box"><span class="kpi-k">Koszt </span><span class="kpi-v">${fmt(gS,0)} zł</span></div>
+        <div class="kpi-box"><span class="kpi-k">Revenue </span><span class="kpi-v">${fmt(gR,0)} zł</span></div>
+      </div></div>
       <div class="col-body" id="cb-${gk}"></div>`;
     board.appendChild(col);
     const body=document.getElementById(`cb-${gk}`);
     if(!list.length){body.innerHTML='<div class="col-empty">Немає офертів</div>';continue;}
     for(const o of list){
-      const{action,reason,rc}=decide(o);
+      const{action,reason}=decide(o);
       const pc=action==='PROMOTE'?'ap-promote':action==='DEMOTE'?'ap-demote':o.cooldown>0?'ap-cooldown':'ap-hold';
       const pl=action==='PROMOTE'?'↑ PROMOTE':action==='DEMOTE'?'↓ DEMOTE':o.cooldown>0?`❄ CD:${o.cooldown}`:'= HOLD';
-      const card=document.createElement('div');
-      card.className='offer-card';
-      card.innerHTML=`
-        <div class="card-top">
-          <div class="card-name">${o.name}</div>
-          <span class="act-pill ${pc}">${pl}</span>
-        </div>
+      const c=document.createElement('div');
+      c.className='offer-card';
+      c.innerHTML=`<div class="card-top"><div class="card-name">${o.name}</div><span class="act-pill ${pc}">${pl}</span></div>
         <div class="card-metrics">
-          <div class="m-box"><div class="m-lbl">ROAS</div><div class="m-val ${rc2color(o.roas)}">${o.roas>0?o.roas+'×':'—'}</div></div>
+          <div class="m-box"><div class="m-lbl">ROAS</div><div class="m-val ${rc(o.roas)}">${o.roas>0?o.roas+'×':'—'}</div></div>
           <div class="m-box"><div class="m-lbl">Koszt</div><div class="m-val c-muted">${fmt(o.spend,1)} zł</div></div>
           <div class="m-box"><div class="m-lbl">Sprzedaż</div><div class="m-val c-muted">${o.sales} szt</div></div>
           <div class="m-box"><div class="m-lbl">Kliki</div><div class="m-val c-muted">${o.clicks}</div></div>
         </div>
-        <div class="card-bottom">
-          <span>${reason}</span>
-          <span>${fmt(o.impressions)} wyśw</span>
-        </div>`;
-      body.appendChild(card);
+        <div class="card-bottom"><span>${reason}</span><span>${fmt(o.impressions)} wyśw</span></div>`;
+      body.appendChild(c);
     }
   }
 }
 
+// ══ RENDER GROUPS ═════════════════════════════════════════════════════
+function renderGroups(){
+  document.getElementById('tab-groups-btn').textContent=`Групи (${groups.length})`;
+  const grid=document.getElementById('groups-grid');
+  grid.innerHTML='';
+  if(!groups.length){grid.innerHTML='<div style="color:var(--muted);font-family:var(--mono);padding:40px;grid-column:1/-1;text-align:center">Немає даних по групах</div>';return;}
+
+  // Sort by ROAS desc
+  const sorted=[...groups].sort((a,b)=>b.roas-a.roas);
+  for(const g of sorted){
+    const{budgetRec,budgetCls,budgetReason,cpcRec,cpcCls,cpcReason}=groupRecommendations(g);
+    const tagCls=g.group==='CORE'?'gt-CORE':g.group==='TEST'?'gt-TEST':g.group==='Reszta'?'gt-Reszta':'gt-mixed';
+    const card=document.createElement('div');
+    card.className='group-card';
+    card.innerHTML=`
+      <div class="gc-head">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+            <div class="gc-name">${g.name}</div>
+            <span class="group-tag ${tagCls}">${g.group}</span>
+          </div>
+          <div class="gc-camp">${g.campaign}</div>
+        </div>
+        <div class="gc-roas-big ${rc(g.roas)}">${g.roas>0?g.roas+'×':'—'}</div>
+      </div>
+      <div class="gc-body">
+        <div class="gc-metrics">
+          <div class="gc-m"><div class="gc-ml">Koszt</div><div class="gc-mv c-muted">${fmt(g.spend,1)} zł</div></div>
+          <div class="gc-m"><div class="gc-ml">Revenue</div><div class="gc-mv c-muted">${fmt(g.revenue,1)} zł</div></div>
+          <div class="gc-m"><div class="gc-ml">Wyświetlenia</div><div class="gc-mv c-muted">${fmt(g.impressions,0)}</div></div>
+          <div class="gc-m"><div class="gc-ml">CPC avg</div><div class="gc-mv c-muted">${g.cpcBrutto>0?g.cpcBrutto+' zł':'—'}</div></div>
+        </div>
+        <div class="rec-row">
+          <div class="rec-box ${budgetCls}">
+            <div class="rec-type">💰 Budżet dzienny</div>
+            <div class="rec-action">${budgetRec}</div>
+            <div class="rec-reason">${budgetReason}</div>
+          </div>
+          <div class="rec-box ${cpcCls}">
+            <div class="rec-type">⚡ Maks. CPC</div>
+            <div class="rec-action">${cpcRec}</div>
+            <div class="rec-reason">${cpcReason}</div>
+          </div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  }
+}
+
+// ══ RENDER HISTORY ════════════════════════════════════════════════════
 function renderHistory(){
   document.getElementById('hist-btn').textContent=`Історія (${history.length})`;
   const list=document.getElementById('hist-list');
   const items=histFilter==='ALL'?history:history.filter(h=>h.action===histFilter);
-  if(!items.length){
-    list.innerHTML='<div class="hist-empty">Ще не було жодної ротації.<br>Натисніть «▶ Rotacja».</div>';
-    return;
-  }
+  if(!items.length){list.innerHTML='<div class="hist-empty">Ще не було жодної ротації.<br>Натисніть «▶ Rotacja».</div>';return;}
   list.innerHTML=items.map(h=>{
     const pc=h.action==='PROMOTE'?'ap-promote':'ap-demote';
     const pl=h.action==='PROMOTE'?'↑ PROMOTE':'↓ DEMOTE';
     return`<div class="hist-item">
       <span class="hist-cycle">Cykl ${h.cycle}</span>
-      <div class="hist-info">
-        <div class="hist-name">${trunc(h.name,52)}</div>
-        <div class="hist-detail">${h.rc} · ROAS ${h.roas}× · ${fmt(h.spend,1)} zł · ${h.sales} szt · ${h.clicks} klik · CD→${h.cooldown_until}</div>
-      </div>
+      <div class="hist-info"><div class="hist-name">${trunc(h.name,52)}</div>
+        <div class="hist-detail">${h.rc} · ROAS ${h.roas}× · ${fmt(h.spend,1)} zł · ${h.sales} szt · ${h.clicks} klik · CD→${h.cooldown_until}</div></div>
       <span class="gp gp-${h.group}">${h.group}</span>
       <span class="arr">→</span>
       <span class="gp gp-${h.to}">${h.to}</span>
@@ -476,62 +638,60 @@ function renderHistory(){
   }).join('');
 }
 
-// ══ UI ════════════════════════════════════════════════════════════════
+// ══ START / RESET ═════════════════════════════════════════════════════
+function startApp(){
+  if(!rawOffers||!rawGroups) return;
+  try{
+    offers=parseOffersXlsx(rawOffers);
+    groups=parseGroupsXlsx(rawGroups);
+    if(!offers.length){alert('Не знайдено офертів.');return;}
+    history=[];cycleCount=1;histFilter='ALL';sortKey='roas';
+    document.getElementById('upload-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    hideNotices();
+    switchTab('board',document.querySelector('.tab-btn'));
+    updateStats();renderBoard();renderGroups();renderHistory();
+  }catch(err){alert('Помилка читання: '+err.message);}
+}
+
+function resetApp(){
+  offers=[];groups=[];history=[];cycleCount=1;
+  rawOffers=rawGroups=rawCamps=null;
+  ['dz-offers','dz-groups','dz-camps'].forEach(id=>{
+    document.getElementById(id).classList.remove('loaded');
+  });
+  document.getElementById('hint-offers').innerHTML='statystyki_oferty_*.xlsx<br><b style="color:var(--amber)">Wymagane</b>';
+  document.getElementById('hint-groups').innerHTML='statystyki_grupy-reklam_*.xlsx<br><b style="color:var(--amber)">Wymagane</b>';
+  document.getElementById('hint-camps').innerHTML='statystyki_kampanie_*.xlsx<br><span style="color:var(--muted)">Opcjonalne</span>';
+  ['fi-offers','fi-groups','fi-camps'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('app').style.display='none';
+  document.getElementById('upload-screen').style.display='flex';
+  updateStartBtn();hideNotices();
+}
+
+// ══ UI HELPERS ════════════════════════════════════════════════════════
 function switchTab(name,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('tab-board').style.display   =name==='board'  ?'':'none';
+  document.getElementById('tab-groups').style.display  =name==='groups' ?'':'none';
   document.getElementById('tab-history').style.display =name==='history'?'':'none';
 }
 function setSort(k,btn){
   sortKey=k;
   document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderBoard();
+  btn.classList.add('active');renderBoard();
 }
 function setHistFilter(f,btn){
   histFilter=f;
   document.querySelectorAll('.hf-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderHistory();
+  btn.classList.add('active');renderHistory();
 }
 function hideNotices(){['n-ok','n-inf'].forEach(id=>document.getElementById(id).classList.remove('show'))}
-function resetApp(){
-  offers=[];history=[];cycleCount=1;sortKey='roas';histFilter='ALL';
-  document.getElementById('app').style.display='none';
-  document.getElementById('upload-screen').style.display='flex';
-  document.getElementById('file-input').value='';
-  hideNotices();
-}
-function rc2color(v){return v>=5?'c-green':v>=BREAK_EVEN?'c-amber':v>0?'c-red':'c-muted'}
+function rc(v){return v>=5?'c-green':v>=BREAK_EVEN?'c-amber':v>0?'c-red':'c-muted'}
 function fmt(n,d=0){return Number(n).toLocaleString('pl-PL',{minimumFractionDigits:d,maximumFractionDigits:d})}
 function r2(n){return Math.round(n*100)/100}
 function trunc(s,n){return s.length>n?s.slice(0,n)+'…':s}
-
-// ══ FILE LOAD ════════════════════════════════════════════════════════
-function loadFile(file){
-  const r=new FileReader();
-  r.onload=e=>{
-    try{
-      const parsed=parseXlsx(e.target.result);
-      if(!parsed.length){alert('Не знайдено офертів у файлі.');return;}
-      offers=parsed;history=[];cycleCount=1;histFilter='ALL';
-      document.getElementById('upload-screen').style.display='none';
-      document.getElementById('app').style.display='block';
-      hideNotices();
-      switchTab('board',document.querySelector('.tab-btn'));
-      updateStats();renderBoard();renderHistory();
-    }catch(err){alert('Помилка читання: '+err.message);}
-  };
-  r.readAsArrayBuffer(file);
-}
-const dz=document.getElementById('drop-zone');
-const fi=document.getElementById('file-input');
-dz.addEventListener('click',()=>fi.click());
-fi.addEventListener('change',e=>{if(e.target.files[0])loadFile(e.target.files[0]);});
-dz.addEventListener('dragover', e=>{e.preventDefault();dz.classList.add('over');});
-dz.addEventListener('dragleave',  ()=>dz.classList.remove('over'));
-dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0]);});
 </script>
 </body>
 </html>
